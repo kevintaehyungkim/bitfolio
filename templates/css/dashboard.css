@@ -1,0 +1,95 @@
+body{
+	margin: 0;
+	padding: 0;
+	
+/*	z-index: -1;*/
+/*	width: 100%;*/
+}
+
+h1 { 
+	font-family: 'Merriweather Sans', sans-serif;
+	font-weight: 600;
+	font-size: 80px;
+	margin: 0;
+	padding: 0;
+	line-height: 120%;
+	position: relative;
+}
+
+h2 {
+   font-family: 'Merriweather Sans', sans-serif;
+   font-weight: 500;
+   font-size: 34px;
+   margin: 0;
+   padding: 0;
+   line-height: 120%;
+   position: relative;
+}
+
+h3 {
+   font-family: 'Merriweather Sans', sans-serif;
+   font-weight: 100;
+   font-size: 18px;
+   margin: 0;
+   padding: 0;
+   line-height: 125%;
+   position: relative;
+}
+
+/*p {
+	font-family: 'Merriweather Sans', sans-serif;
+	font-weight: 100;
+	font-size: 3px;
+}
+
+/*button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+button:hover{
+    opacity: 0.8;
+}
+*/
+#title{
+/*	font-family: 'Merriweather Sans', sans-serif;*/
+	position: absolute;
+	width: 100%;
+	top: 20%;
+	left: 20px;
+	text-align: left;
+	z-index: 20;
+	color: #212B33;
+}
+
+#description{
+	top: 122%;
+	height: 100%;
+	width: 45%;
+	position: absolute;
+	text-align: left;
+}
+
+#login{
+	top: 202%;
+/*	left: 56%;*/
+	position: absolute;
+}
+
+#signup{
+	top: 202%;
+	left: 6.6%;
+	position: absolute;
+}
+
+#particle-canvas{
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	z-index: 10;
+}

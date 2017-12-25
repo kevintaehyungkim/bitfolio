@@ -12,7 +12,7 @@ h1 {
 	font-size: 80px;
 	margin: 0;
 	padding: 0;
-	line-height: 120%;
+	line-height: 115%;
 	position: relative;
 }
 
@@ -22,8 +22,10 @@ h2 {
    font-size: 34px;
    margin: 0;
    padding: 0;
-   line-height: 120%;
+   line-height: 115%;
    position: relative;
+   /*color:#1B96DD;*/
+   color: #53A550;
 }
 
 h3 {
@@ -36,31 +38,48 @@ h3 {
    position: relative;
 }
 
-/*p {
+/*a {
 	font-family: 'Merriweather Sans', sans-serif;
 	font-weight: 100;
-	font-size: 3px;
+}*/
+
+
+#header { 
+	width: 100%; 
+	height: 50px; 	
+	position: absolute;
+	margin-top: 0px;
+	background-color: #25292E;
+	z-index: 20;
+	overflow: hidden;
 }
 
-/*button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    cursor: pointer;
-    width: 100%;
+#nav { width:800px; float: left; margin-top: 5.5px; margin-left: 50.5px;}
+
+#nav ul{
+	list-style: none;
+	display: block;
+	margin: 0 auto;
 }
 
-button:hover{
-    opacity: 0.8;
+#nav li{
+	margin-top: 6px;	
+	float: left;
+	padding-left: 36px;
 }
-*/
+
+#nav li a { color: #C8C9CB; font-size: 14px; text-decoration: none; font-family: 'Merriweather Sans', sans-serif; font-weight: bold;}
+#nav li a.active { color: #FFFFFF; opacity:1; border-bottom: 2px ; text-decoration: none}
+#nav li a:hover { color: #FFFFFF; opacity:1; }
+
+
+
+
 #title{
 /*	font-family: 'Merriweather Sans', sans-serif;*/
 	position: absolute;
 	width: 100%;
-	top: 22%;
+	top: 25%;
 	left: 120px;
 	text-align: left;
 	z-index: 20;
@@ -68,7 +87,7 @@ button:hover{
 }
 
 #description{
-	top: 122%;
+	top: 120%;
 	height: 100%;
 	width: 45%;
 	position: absolute;
@@ -85,6 +104,13 @@ button:hover{
 	top: 200%;
 	left: 6.6%;
 	position: absolute;
+}
+
+#portfolio{
+	position: absolute;
+	top: 26%;
+	left: 61%;
+	z-index: 20;
 }
 
 #particle-canvas{

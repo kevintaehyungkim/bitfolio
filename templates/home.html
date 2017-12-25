@@ -4,58 +4,93 @@
 
     <title>Bitfolio</title>
     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
-    <link href="css/home.css" type="text/css" rel="stylesheet">
+<!--     <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet"> -->
+    <link href="../static/styles/home.css" type="text/css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans" rel="stylesheet" type='text/css'>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static', filename='styles/home.css') }}">
 
 </head>
  
 
 <body>
 
-    <!-- <div id="home">
+    <header id="header">
         <div class="content">
-            <h1>Taehyung (Kevin) Kim</h1>
-            <h2>Software Developer and Aspiring Entrepreneur</h2>
+        <nav id="nav">
+            <ul>
+                <li><a href="#home" class="active" title="Next Section">Home</a></li>
+                <li><a href="#dashboard" title="Next Section">DashBoard</a></li>
+                <li><a href="#contact" title="Next Section">Contact</a></li>
+                <li><a href="#faq" title="Next Section">FAQ</a></li>
+                <li><a href="#login" title="Next Section">Login</a></li>
+                <li><a href="#signup" title="Next Section">Signup</a></li>
+            </ul>
+        </nav>
+        </div>
+    </header>   
+
+
+<!-- 
+    <div class="topnav" id="myTopnav">
+      <a href="#home" class="active">Home</a>
+      <a href="#news">News</a>
+      <a href="#contact">Contact</a>
+      <a href="#about">About</a>
+      <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
+    </div>
+
+    <script>
+    function myFunction() {
+        var x = document.getElementById("myTopnav");
+        if (x.className === "topnav") {
+            x.className += " responsive";
+        } else {
+            x.className = "topnav";
+        }
+    }
+    </script> -->
+
+
+    <div id="title">
+
+        <div id="content">
+            <h1>Bitfolio</h1>
+            <h2>Personalized Cryptocurrency Portfolio</h2>
         </div> 
-    </div>  -->
 
-<!--     <div id="particle-canvas"> -->
-
-        <div id="title">
-
-            <div id="content">
-                <h1>Bitfolio</h1>
-                <h2>Personalized Cryptocurrency Portfolio</h2>
-            </div> 
-
-            <div id="description">
-                <h3>Enjoy complete control over your bitcoin and altcoin portfolio with historical progress charts, detailed price actions of individual 
-                coins, and easy-to-use tools at your disposal to best access your investments. </h3>
-            </div> 
-
-            <div id="login">
-                <p><a class="btn btn-lg btn-success" href="showSignUp" role="button">Login</a></p>
-            </div>
-
-            <div id="signup">
-                <p><a class="btn btn-lg btn-success" href="showSignUp" role="button">Sign Up</a></p>
-            </div>
-
+        <div id="description">
+            <h3>Enjoy complete control over your bitcoin and altcoin portfolio with historical progress charts, detailed price actions of individual 
+            coins, and easy-to-use tools at your disposal to best access your investments. </h3>
         </div> 
 
-        <div id="particle-canvas">
-            <script type="text/javascript" src="particle-network.min.js"></script>
-            <script type="text/javascript">
-            var canvasDiv = document.getElementById('particle-canvas');
-            var options = {
-                particleColor: '#888',
-                background: "img/bg1.png",
-                interactive: false,
-                speed: 'normal',
-                density: 'high'
-            };
-            var particleCanvas = new ParticleNetwork(canvasDiv, options);
+        <div id="login">
+            <p><a class="btn btn-lg btn-success" href="showSignUp" role="button">Login</a></p>
+        </div>
+
+        <div id="signup">
+            <p><a class="btn btn-lg btn-success" href="showSignUp" role="button">Sign Up</a></p>
+        </div>
+
+    </div> 
+
+
+    <div id="portfolio">
+        <img src="../static/img/p1.jpg" alt="portfolio" width="470">
+    </div>
+
+
+    <div id="particle-canvas">
+        <script type="text/javascript" src="../static/js/particle-network.min.js"></script>
+        <script type="text/javascript">
+        var canvasDiv = document.getElementById('particle-canvas');
+        var options = {
+            particleColor: '#888',
+            background: "../static/img/bg1.png",
+            interactive: false,
+            speed: 'normal',
+            density: 'high'
+        };
+        var particleCanvas = new ParticleNetwork(canvasDiv, options);
         </script>
 
     </div>

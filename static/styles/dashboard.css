@@ -9,7 +9,7 @@ body{
 h1 { 
 	font-family: 'Merriweather Sans', sans-serif;
 	font-weight: 600;
-	font-size: 80px;
+	font-size: 50px;
 	margin: 0;
 	padding: 0;
 	line-height: 120%;
@@ -28,8 +28,8 @@ h2 {
 
 h3 {
    font-family: 'Merriweather Sans', sans-serif;
-   font-weight: 100;
-   font-size: 18px;
+   font-weight: 900;
+   font-size: 28px;
    margin: 0;
    padding: 0;
    line-height: 125%;
@@ -40,9 +40,9 @@ h3 {
 	font-family: 'Merriweather Sans', sans-serif;
 	font-weight: 100;
 	font-size: 3px;
-}
+}*/
 
-/*button {
+/*/button {
     background-color: #4CAF50;
     color: white;
     padding: 14px 20px;
@@ -54,36 +54,71 @@ h3 {
 
 button:hover{
     opacity: 0.8;
+}*/
+
+
+
+
+#header { 
+	width: 100%; 
+	height: 50px; 	
+	position: fixed;
+	margin-top: 0px;
+	background-color: #25292E;
+	z-index: 20;
+	overflow: hidden;
 }
-*/
+
+#nav { width:800px; float: left; margin-top: 5.5px; margin-left: 50.5px;}
+
+#nav ul {
+	list-style: none;
+	display: block;
+	margin: 0 auto;
+}
+
+#nav li {
+	margin-top: 6px;	
+	float: left;
+	padding-left: 36px;
+}
+
+#nav li a { color: #C8C9CB; font-size: 14px; text-decoration: none; font-family: 'Merriweather Sans', sans-serif; font-weight: bold;}
+#nav li a.active { color: #FFFFFF; opacity:1; border-bottom: 2px ; text-decoration: none}
+#nav li a:hover { color: #FFFFFF; opacity:1; }
+
+
+
+
+
+
 #title{
 /*	font-family: 'Merriweather Sans', sans-serif;*/
 	position: absolute;
 	width: 100%;
-	top: 20%;
-	left: 20px;
+	height: 100%;
+	top: 15%;
+	left: 40px;
 	text-align: left;
 	z-index: 20;
 	color: #212B33;
 }
 
-#description{
-	top: 122%;
-	height: 100%;
-	width: 45%;
-	position: absolute;
-	text-align: left;
-}
-
-#login{
-	top: 202%;
+#add{
+	top: 30%;
 /*	left: 56%;*/
 	position: absolute;
 }
 
-#signup{
-	top: 202%;
-	left: 6.6%;
+#remove{
+	top: 30%;
+	left: 9%;
+	position: absolute;
+}
+
+#refresh{
+	top: 30%;
+	left: 20.4%;
 	position: absolute;
 }
 

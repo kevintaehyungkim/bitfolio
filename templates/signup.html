@@ -7,7 +7,7 @@
    <!--  <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet"> -->
 <!--     <link href="../static/styles/dashboard.css" type="text/css" rel="stylesheet"> -->
     <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans" rel="stylesheet" type='text/css'>
-    <link href="../static/styles/dashboard.css" type="text/css" rel="stylesheet">
+    <link href="../static/styles/signup.css" type="text/css" rel="stylesheet">
     <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static', filename='styles/dashboard.css') }}">
   <!--   <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static', filename='styles/home.css') }}"> -->
 </head>
@@ -19,18 +19,18 @@
         <div class="content">
         <nav id="nav">
             <ul>
-                <li><a href="#home" class="active" title="Next Section">Home</a></li>
+                <li><a href="#home" title="Next Section">Home</a></li>
                 <li><a href="#dashboard" title="Next Section">DashBoard</a></li>
                 <li><a href="#contact" title="Next Section">Contact</a></li>
                 <li><a href="#faq" title="Next Section">FAQ</a></li>
                 <li><a href="#login" title="Next Section">Login</a></li>
-                <li><a href="#signup" title="Next Section">Signup</a></li>
+                <li><a href="#signup" class="active" title="Next Section">Signup</a></li>
             </ul>
         </nav>
         </div>
     </header>  
 
-        <div id="title">
+        <!-- <div id="title">
 
             <div id="welcome">
                 <h2>Welcome</h2>
@@ -51,7 +51,26 @@
                 <p><a class="btn btn-lg btn-success" href="showSignUp" role="button">Refresh</a></p>
             </div>
 
-        </div> 
+        </div>  -->
+
+        <div class="jumbotron">
+            <h1>Sign Up</h1>
+            <form class="form-signin">
+            <label for="inputName" class="sr-only">FirstName</label>
+            <input type="name" name="inputName" id="inputName" class="form-control" placeholder="First Name" required autofocus>
+            <br></br>
+            <label for="inputName" class="sr-only">LastName</label>
+            <input type="name" name="inputName" id="inputName" class="form-control" placeholder="Last Name" required autofocus>
+            <br></br>
+            <label for="inputEmail" class="sr-only">Email address</label>
+            <input type="email" name="inputEmail" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+            <br></br>
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input type="password" name="inputPassword" id="inputPassword" class="form-control" placeholder="Password" required>
+             
+            <button id="btnSignUp" class="btn btn-lg btn-primary btn-block" type="button">Sign Up</button>
+          </form>
+          </div>
 
         <div id="particle-canvas">
             <script type="text/javascript" src="../static/js/particle-network.min.js"></script>

@@ -8,7 +8,7 @@ body{
 
 h1 { 
 	font-weight: 600;
-	font-size: 50px;
+	font-size: 52px;
 	margin: 0;
 	padding: 0;
 	line-height: 120%;
@@ -17,7 +17,7 @@ h1 {
 
 h2 {
    font-weight: 500;
-   font-size: 34px;
+   font-size: 30px;
    margin: 0;
    padding: 0;
    line-height: 120%;
@@ -93,26 +93,27 @@ button:hover{
 #nav li a:hover { color: #FFFFFF; opacity:1; }
 
 
-
 #title {
-	left:120px;
-	top: 12%;
+	left:32%;
+	top: 15%;
 	position: absolute;
-	z-index: 22;
-}
-
-
-
-#jumbotron {
-	width: 50%;
-	top: 30%;
-	left: 25%;
-	position: absolute;
-	z-index: 22;
-}
-
-#jumbotron h3 {
+	z-index: 19;
 	text-align: center;
+}
+
+#login {
+	width: 26%;
+	top: 34%;
+	left: 38%;
+	position: absolute;
+	z-index: 22;
+}
+
+#login-screen {
+	background-color: #FFF;
+	padding: 20px;
+	border-radius: 10px;
+	box-sizing: border-box;
 }
  
 .form-signin {
@@ -151,11 +152,15 @@ button:hover{
 }
 
 
-
-
 #particle-canvas{
 	position: absolute;
 	height: 100%;
 	width: 100%;
 	z-index: 10;
+
+	-webkit-filter: blur(3px);
+	-moz-filter: blur(3px);
+	-o-filter: blur(3px);
+	-ms-filter: blur(3px);
+	filter: blur(3px);
 }

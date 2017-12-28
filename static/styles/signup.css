@@ -34,6 +34,16 @@ h3 {
    position: relative;
 }
 
+h4 {
+   font-weight: 300;
+   font-size: 14px;
+   margin: 0;
+   padding: 0;
+   line-height: 125%;
+   position: relative;
+   text-align: center;
+}
+
 br {
 	display: block;
 	margin: 8px 0;
@@ -94,17 +104,17 @@ button:hover{
 
 
 #title {
-	left:32%;
-	top: 15%;
+	left:455px;
+	top: 115px;
 	position: absolute;
 	z-index: 19;
 	text-align: center;
 }
 
 #login {
-	width: 26%;
-	top: 34%;
-	left: 38%;
+	width: 370px;
+	top: 245px;
+	left: 547px;
 	position: absolute;
 	z-index: 22;
 }

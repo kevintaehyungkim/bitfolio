@@ -80,7 +80,7 @@ h3 {
 #description{
 	top: 120%;
 	height: 100%;
-	width: 45%;
+	width: 620px;
 	position: absolute;
 	text-align: left;
 }
@@ -93,14 +93,14 @@ h3 {
 
 #signup{
 	top: 200%;
-	left: 7.5%;
+	left: 105px;
 	position: absolute;
 }
 
 #portfolio{
 	position: absolute;
 	top: 26%;
-	left: 61%;
+	left: 860px;
 	z-index: 20;
 }
 

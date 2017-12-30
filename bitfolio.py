@@ -83,7 +83,7 @@ class Transaction(db.Model):
     total = db.Column(db.Float(precision=4))
     time_created = db.Column(DateTime(timezone=True), server_default=func.now())
 
-    def __init__(self, transaction, coin, amount, total, time_created):
+    def __init__(self, transaction, coin, amount):
         self.transaction = transaction
         self.coin = coin
         self.amount = amount
@@ -127,12 +127,14 @@ def begin_transaction():
     print("Starting Transaction")
     if request.method == 'POST':
         coin_fullname = request.form['coin']
+        print(coin_fullname)
         coin_symbol = coin_fullname.split("(",1)[1][:-1]
+        print(coin_symbol)
         coin_name = coin_fullname.split("(",1)[0]
         coin_data = receive_data_single(coin_symbol)
-        coin_price= coin_data["USD"]
-        coin_url = image_url(coin_symbol)
-        return render_template('transaction.html', coin=coin_name, image_url=coin_url, coin_price=coin_price)
+        coin_price = coin_data["USD"]
+        # coin_url = image_url(coin_symbol)
+        return render_template('transaction.html', coin=coin_name, image_url=image_url(coin_symbol), coin_price=coin_price, coin_symbol=coin_symbol)
 
 
 # Transaction
@@ -146,16 +148,19 @@ def complete_transaction():
         trade_pair = request.form.get('pair')
         trade_price = request.form['price']
         trade_amount = request.form['amount']
+        coin_symbol = trade_pair.split("/", 1)[0]
         try:
-
-            new_transaction = Transaction(transaction=transaction_type, coin=, amount=request.form['email'], total=request.form['password'])
-            db.session.add(new_user)
+            new_transaction = Transaction(transaction=transaction_type, coin=coin_symbol, amount=float(trade_amount))
+            db.session.add(new_transaction)
             db.session.commit()
             return redirect(url_for('login'))
         except:
-            message = Markup("Invalid parameters: Please enter floats.")
+            coin_data = receive_data_single(coin_symbol)
+            coin_price= coin_data["USD"]
+            # coin_url = image_url(coin_symbol)
+            message = Markup("Invalid parameters: Please enter valid numbers.")
             flash(message)
-            return render_template('transaction.html')
+            return render_template('transaction.html', coin=coin_name, image_url=image_url(coin_symbol), coin_price=coin_price)
         return redirect(url_for('login'))
 
 

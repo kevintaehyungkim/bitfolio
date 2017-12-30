@@ -1,7 +1,7 @@
 body{
 	margin: 0;
 	padding: 0;
-	font-family: 'Varela Round', sans-serif;
+	font-family: 'Lato', sans-serif;
 /*	z-index: -1;*/
 /*	width: 100%;*/
 }
@@ -51,6 +51,21 @@ br {
 	content: " ";
 }
 
+button {
+    font-weight: lighter;
+    font-size: 18px;
+	line-height: 120%;
+	padding: 10.5px;
+	background-color: #34363B;
+	color: white;
+	border-radius: 5px;
+}
+
+button:hover {
+	opacity: 0.9;
+	cursor: pointer;
+}
+
 /*p {
 	font-family: 'Merriweather Sans', sans-serif;
 	font-weight: 100;
@@ -98,13 +113,13 @@ button:hover{
 	padding-left: 36px;
 }
 
-#nav li a { color: #C8C9CB; font-size: 16px; text-decoration: none; font-family: 'Varela Round', sans-serif; font-weight: bold;}
+#nav li a { color: #C8C9CB; font-size: 16px; text-decoration: none; font-family: 'Lato', sans-serif; font-weight: bold;}
 #nav li a.active { color: #FFFFFF; opacity:1; border-bottom: 2px ; text-decoration: none}
 #nav li a:hover { color: #FFFFFF; opacity:1; }
 
 
 #title {
-	left:455px;
+	left:460px;
 	top: 115px;
 	position: absolute;
 	z-index: 19;
@@ -114,7 +129,7 @@ button:hover{
 #login {
 	width: 370px;
 	top: 245px;
-	left: 547px;
+	left: 540px;
 	position: absolute;
 	z-index: 22;
 }
@@ -124,6 +139,7 @@ button:hover{
 	padding: 20px;
 	border-radius: 10px;
 	box-sizing: border-box;
+	border: 1.47px solid #DBE1E8;
 }
  
 .form-signin {

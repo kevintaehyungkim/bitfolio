@@ -1,7 +1,7 @@
 body{
 	margin: 0;
 	padding: 0;
-	font-family: 'Varela Round', sans-serif;
+	font-family: 'Lato', sans-serif;
 /*	z-index: -1;*/
 /*	width: 100%;*/
 }
@@ -60,7 +60,7 @@ h3 {
 	padding-left: 36px;
 }
 
-#nav li a { color: #C8C9CB; font-size: 16px; text-decoration: none; font-family: 'Varela Round', sans-serif; font-weight: bold;}
+#nav li a { color: #C8C9CB; font-size: 16px; text-decoration: none; font-family: 'Lato', sans-serif; font-weight: bold;}
 #nav li a.active { color: #FFFFFF; opacity:1; border-bottom: 2px ; text-decoration: none}
 #nav li a:hover { color: #FFFFFF; opacity:1; }
 

@@ -1,9 +1,8 @@
 # http://localhost:5000/
 
 import os
-import json
 import base64
-import requests
+import blockchain
 import urllib.parse
 from flask import Flask
 from flask import Markup
@@ -12,6 +11,11 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug import generate_password_hash, check_password_hash
 from Crypto import Random
 from Crypto.Cipher import AES
+
+from sqlalchemy.sql import func
+# import datetime
+from sqlalchemy import Column, Integer, DateTime
+# created_date = Column(DateTime, default=datetime.datetime.utcnow)
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///bitfolio.db'
@@ -43,7 +47,7 @@ class AESCipher:
 
 # User Class
 class User(db.Model):
-
+    __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     firstname = db.Column(db.String(45))
     lastname = db.Column(db.String(45))
@@ -61,6 +65,28 @@ class User(db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
+
+
+# Transaction Class
+class Transaction(db.Model):
+    __tablename__ = 'transactions'
+    id = db.Column(db.Integer, primary_key=True)
+    transaction = db.Column(db.String(4))
+    coin = db.Column(db.String(20))
+    amount = db.Column(db.Float(precision=4))
+    total = db.Column(db.Float(precision=4))
+    time_created = db.Column(DateTime(timezone=True), server_default=func.now())
+
+    def __init__(self, transaction, coin, amount, total, time_created):
+        self.transaction = transaction
+        self.coin = coin
+        self.amount = amount
+        self.total = coin_price(coin, amount)
+        self.time_created = time_created
+
+    def coin_price(self, coin, amount):
+        coin_price = receive_coin_data([coin])
+        return coin_price * amount  
 
 
 # Home Page
@@ -81,8 +107,19 @@ def dashboard(encrypt=None):
         cipher = AESCipher('mysecretpassword')
         user_email = cipher.decrypt(decoded_bytes).decode("utf-8")
         user_data = User.query.filter_by(email=user_email).first()
-        return render_template('dashboard.html', name=user_data.firstname)
+        full_name = user_data.firstname + " " + user_data.lastname
+        return render_template('dashboard.html', name=full_name)
 
+
+# Transaction
+@app.route('/transaction', methods=['GET', 'POST'])
+def transaction():
+    if request.method == 'POST':
+        coin_fullname = request.form['coin']
+        coin_symbol = coin_fullname.split("(",1)[1][:-1]
+        coin_data = receive_coin_data([coin_symbol])
+        coin_price= coin_data[coin]["USD"]
+        print (coin_price)
 
 # Signup
 @app.route('/signup', methods=['GET', 'POST'])
@@ -140,16 +177,6 @@ def logout():
     return redirect(url_for('home'))
 
 
-# Pings API and receives data for multiple coins at a time.
-def receive_coin_data(coin):
-
-    url = "https://min-api.cryptocompare.com/data/pricemulti?fsyms=BTC,ETH&tsyms=USD"
-    response = requests.get(url)
-    data = response.json()
-    return (data[coin]["USD"])
-    # print (data[0])
-    # print (data[1])
-    # print (data)
 
 # with coin/quantities, calculate graph based on 
 def calculate_total(coin_dict):
@@ -159,7 +186,7 @@ def update_total():
     return
 
 if __name__ == "__main__":
-    print ("app running")
+    print ("Bitfolio Started")
     db.create_all()
     app.secret_key = '123'
     app.debug = True

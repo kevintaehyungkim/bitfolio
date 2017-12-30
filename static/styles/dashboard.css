@@ -1,36 +1,52 @@
 body{
 	margin: 0;
 	padding: 0;
-	font-family: 'Varela Round', sans-serif;
-/*	z-index: -1;*/
+	font-family: 'Lato', sans-serif;
+	z-index: 25;
 /*	width: 100%;*/
 }
 
 h1 { 
 	font-weight: 600;
-	font-size: 50px;
+	font-size: 42px;
 	margin: 0;
 	padding: 0;
-	line-height: 120%;
+	line-height: 110%;
 	position: relative;
 }
 
 h2 {
    font-weight: 500;
-   font-size: 34px;
+   font-size: 32px;
    margin: 0;
    padding: 0;
-   line-height: 120%;
+   line-height: 110%;
    position: relative;
 }
 
 h3 {
-   font-weight: 900;
-   font-size: 28px;
-   margin: 0;
-   padding: 0;
-   line-height: 125%;
-   position: relative;
+   font-size:1em; 
+  font-weight: 100;
+/*  text-align: center;*/
+/*  display: block;*/
+ /* line-height:1em;*/
+/*  padding-bottom: 1em;*/
+  color: #FB667A;
+}
+
+br {
+	display: block;
+	margin: 15px 0;
+	line-height: 15px;
+	content: " ";
+}
+
+table {
+	border-radius: 5px;
+}
+
+tr {
+	border: 1px #DDDDDD;
 }
 
 
@@ -39,7 +55,7 @@ h3 {
 	height: 60px; 	
 	position: absolute;
 	margin-top: 0px;
-	background-color: #25292E;
+	background-color: #34363B;
 	z-index: 20;
 	overflow: hidden;
 }
@@ -58,68 +74,383 @@ h3 {
 	padding-left: 36px;
 }
 
-#nav li a { color: #C8C9CB; font-size: 16px; text-decoration: none; font-family: 'Varela Round', sans-serif; font-weight: bold;}
+#nav li a { color: #C8C9CB; font-size: 16px; text-decoration: none; font-family: 'Lato', sans-serif; font-weight: bold;}
 #nav li a.active { color: #FFFFFF; opacity:1; border-bottom: 2px ; text-decoration: none}
 #nav li a:hover { color: #FFFFFF; opacity:1; }
 
 
-
-
-
-#title {
-/*	font-family: 'Merriweather Sans', sans-serif;*/
+#welcome {
+	width: 600px;
+	top: 85px;
+	left: 120px;
 	position: absolute;
-	width: 100%;
-	height: 100%;
-	top: 15%;
-	left: 125px;
+	z-index: 30;
+}
+
+#welcome_container {
+	background-color: #FFF;
+	padding: 20px;
+	border-radius: 5px;
+	box-sizing: border-box;
+	border: 1.47px solid #DBE1E8;
+}
+
+#user_description {
+	position: absolute;
+	left: 162px;
+	top: 14.5px;
+}
+
+button {
+    font-weight: lighter;
+    font-size: 18px;
+	line-height: 120%;
+	padding: 10.5px;
+	background-color: #34363B;
+	color: white;
+	border-radius: 5px;
+}
+
+button:hover {
+	opacity: 0.9;
+	cursor: pointer;
+}
+
+
+#key {
+	top: 100px;
+	left: 1030px;
+	position: absolute;
+	z-index: 35;
+}
+
+#reload {
+	top: 100px;
+	left: 1195px;
+	position: absolute;
+	z-index: 35;
+}
+
+
+
+input,
+input::-webkit-input-placeholder {
+    font-size: 14.5px;
+ /*   line-height: 3;*/
+}
+
+
+/*
+PORTFOLIO
+*/
+
+#table {
+	width: 580px;
+	top: 85px;
+	left: 736px;
+	position: absolute;
+	z-index: 30;
+}
+
+#table-container {
+	height: 620px;
+	background-color: #FFF;
+	padding: 20px;
+	border-radius: 5px;
+	box-sizing: border-box;
+	border: 1.47px solid #DBE1E8;
+}
+
+
+.portfolio th h3 {
+	font-weight: lighter;
+	font-size: 1em;
+    text-align: left;
+    color: white;
+    margin-top: 5.5px;
+    line-height:0.5em;
+}
+
+.portfolio td {
+	font-weight: lighter;
+	font-size: 1em;
+/*    -webkit-box-shadow: 0 1px 0px 1px #0E1119;
+    -moz-box-shadow: 0 1px 1px -1px #0E1119;
+	box-shadow: 0 2px 0px -2px #0E1119;*/
+}
+
+.portfolio {
 	text-align: left;
-	z-index: 20;
-	color: #212B33;
+	overflow: hidden;
+	width: 100%;
+	margin: 15 0 0 0;
+    display: table;
+    padding: 0 0 8em 0;
+     /* line-height:1em;*/
 }
 
-#add {
-	top: 30%;
-/*	left: 56%;*/
+.portfolio td, .portfolio th {
+	padding-bottom: 1.8%;
+	padding-top: 1.8%;
+    padding-left:1.8%;  
+}
+
+.portfolio th {
+	  background-color: #34363B;
+}
+
+
+
+/*
+RECENT TRANSACTIONS
+*/
+
+#table2 {
+	width: 600px;
+	top: 330px;
+	left: 122px;
 	position: absolute;
+	z-index: 30;
 }
 
-#remove {
-	top: 30%;
-	left: 10%;
-	position: absolute;
-}
-
-#refresh {
-	top: 30%;
-	left: 22.4%;
-	position: absolute;
-}
-
-#portfolio-table {
-	margin: 0;
-	top: 430px;
-	width: 85%;
-	left: 125px;
-	position: absolute;
-	z-index: 20;
-	border: 2px solid black;
-}
-
-#portfolio th{
-	font-family: 'Varela Round', sans-serif;
-	font-size: 26px;
-}
-
-#portfolio tr{
-	font-family: 'Varela Round', sans-serif;
-	font-size: 20px;
+#table-container2 {
+	height: 374px;
+	background-color: #FFF;
+	padding: 20px;
+	border-radius: 5px;
+	box-sizing: border-box;
+	border: 1.47px solid #DBE1E8;
 }
 
 
-#particle-canvas{
+
+/*.container td:first-child { color: #FB667A; }*/
+
+#particle-canvas {
 	position: absolute;
 	height: 100%;
 	width: 100%;
 	z-index: 10;
+
+	-webkit-filter: blur(3px);
+	-moz-filter: blur(3px);
+	-o-filter: blur(3px);
+	-ms-filter: blur(3px);
+	filter: blur(3px);
+}
+
+
+
+
+
+
+
+
+
+
+/* Full-width input fields */
+input[type=coin], input[type=key] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+
+/* Extra styles for the cancel button */
+/*.cancelbtn {
+    width: auto;
+    padding: 10px 18px;
+    background-color: #f44336;
+}*/
+
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 50; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    padding-top: 60px;
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+    border: 1px solid #888;
+    width: 40%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button (x) */
+.close {
+    position: absolute;
+    right: 25px;
+    top: 0;
+    color: #000;
+    font-size: 35px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: red;
+    cursor: pointer;
+}
+
+.container {
+    padding: 12px;
+}
+
+#currency-typeahead {
+    padding: 12px;
+    z-index: 60;
+}
+
+/* Add Zoom Animation */
+.animate {
+    -webkit-animation: animatezoom 0.6s;
+    animation: animatezoom 0.6s
+}
+
+@-webkit-keyframes animatezoom {
+    from {-webkit-transform: scale(0)} 
+    to {-webkit-transform: scale(1)}
+}
+    
+@keyframes animatezoom {
+    from {transform: scale(0)} 
+    to {transform: scale(1)}
+}
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+    span.psw {
+       display: block;
+       float: none;
+    }
+    .cancelbtn {
+       width: 100%;
+    }
+}
+
+
+
+
+
+
+.form-signin {
+  max-width: 330px;
+  padding: 0px;
+  margin: 0 auto;
+}
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+  margin-bottom: 10px;
+}
+.form-signin .checkbox {
+  font-weight: normal;
+}
+.form-signin .form-control {
+  position: relative;
+  height: auto;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+
+/*
+.form-signin input[type="text"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}*/
+
+
+
+
+
+
+
+
+
+/* Select Coin Typeahead */
+
+#coin-typeahead {
+	top:261px;
+	left: 122px;
+/*	width: 600px;*/
+	position: absolute;
+	z-index: 35;
+	    font-size: 16px;
+}
+
+#add {
+	top: 7px;
+	left: 197px;
+	width: 200px;
+	position: absolute;
+	z-index: 35;
+}
+
+
+
+
+
+
+.typeahead {
+    font-family: 'Lato', sans-serif;
+    position: relative;
+    margin: 0px;
+}
+.tt-query {
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.tt-hint {
+  color: #999
+}
+
+.tt-menu {    /* used to be tt-dropdown-menu in older versions */
+  width: 380px;
+  margin-top: 4px;
+  padding: 4px 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;
+  -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+     -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+          box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+
+.tt-suggestion {
+  padding: 3px 20px;
+  line-height: 24px;
+}
+
+.tt-suggestion.tt-cursor,.tt-suggestion:hover {
+  color: #fff;
+  background-color: #0097cf;
+
+}
+
+.tt-suggestion p {
+  margin: 0;
 }

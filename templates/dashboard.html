@@ -3,13 +3,20 @@
 <head>
 
     <title>Bitfolio</title>
-    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+<!--     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet"> -->
    <!--  <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet"> -->
 <!--     <link href="../static/styles/dashboard.css" type="text/css" rel="stylesheet"> -->
-    <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
+    <script type="text/javascript" src="../static/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="../static/js/bloodhound.js"></script>
+    <script type="text/javascript" src="../static/js/typeahead.jquery.js"></script>
+
+ <!--    <script type="text/javascript" src="../static/js/jquery_typeahead.md"></script> -->
+ <!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
+    <script  type="text/javascript" src="../static/js/coin-typeahead.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
     <link href="../static/styles/dashboard.css" type="text/css" rel="stylesheet">
     <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static', filename='styles/dashboard.css') }}">
-  <!--   <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static', filename='styles/home.css') }}"> -->
+
 </head>
  
 
@@ -26,50 +33,134 @@
         </div>
     </header>  
 
-
-
-    <div id="title">
-        <div id="welcome">
-            <h2>Welcome</h2>
-                <h1>{{ name }}</h1>
-            <br></br>
-            <h2>Total Portfolio Value: $ {{total_val}} </h2>
-        </div> 
-
-        <div id="add">
-            <p><a class="btn btn-lg btn-success" href="showSignUp" role="button"> + Add Coin</a></p>
-        </div>
-
-        <div id="remove">
-            <p><a class="btn btn-lg btn-success" href="showSignUp" role="button"> - Remove Coin</a></p>
-        </div>
-
-        <div id="refresh">
-            <p><a class="btn btn-lg btn-success" href="showSignUp" role="button">Refresh</a></p>
+    <div id="welcome">
+        <div id="welcome_container">
+            <div id="user_photo">
+                <img src="../static/img/morty.png" alt="Mountain View" width=124px>
+            </div>
+            <div id="user_description">
+                <h2>Welcome</h2>
+                    <h1>{{ name }}</h1>
+                <br></br>
+                <h2>Total Balance: $ {{total_val}} </h2>
+            </div>
         </div>
     </div> 
 
 
-    <table id="portfolio-table">
-      <tr>
-        <th>Coin</th>
-        <th>Current Price</th> 
-        <th>Holdings</th>
-        <th>Total</th>
-      </tr>
-      <tr>
-        <td>Bitcoin (BTC)</td>
-        <td>12390.32</td> 
-        <td>50</td>
-        <td>5000000</td>
-      </tr>
-      <tr>
-        <td>Ethereum (ETH)</td>
-        <td>500.67</td> 
-        <td>94</td>
-        <td>5020303
-      </tr>
-    </table>
+     <div id="key">
+        <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;"> &#128273; Import Wallet</button>
+    </div>
+
+
+    <div id="reload">
+        <button type="submit"> &#x27f3; Reload</button>
+    </div>
+
+
+    <div id="table">
+        <div id="table-container">
+            <h2>Your Portfolio</h2>
+            <table class="portfolio" frame=hsides rules=rows>
+                <thead>
+                <tr>
+                <th><h3>Coin</h3></th>
+                <th><h3>Current Price</h3></th> 
+                <th><h3>Holdings</h3></th>
+                <th><h3>Total</h3></th>
+                </tr>
+                </thead>
+            <tbody>        
+            <tr>
+                <td>Bitcoin (BTC)</td>
+                <td>$12390.32</td> 
+                <td>50</td>
+                <td>5000000</td>
+            </tr>
+            <tr>
+                <td>Ethereum (ETH)</td>
+                <td>$500.67</td> 
+                <td>94</td>
+                <td>5020303</td>
+            </tr>
+            <tr>
+                <td>Ripple (XRP)</td>
+                <td>$1.34</td> 
+                <td>94</td>
+                <td>5020303</td>
+            </tr>
+            <tr>
+                <td>Litecoin (LTC)</td>
+                <td>$300.27</td> 
+                <td>94</td>
+                <td>5020303</td>
+            </tr>
+            </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <div id="coin-typeahead">
+        <form class="form-signin" action="/transaction" method="POST">
+            <div class="typeahead">
+                <input id ="coin" type="coin" class="typeahead tt-query" placeholder="Search Currencies" autocomplete="off" spellcheck="false" required>
+            </div>
+            <div id="add">
+                <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;"> + Add Transaction</button>
+            </div>
+        </form>
+    </div>
+
+
+    <div id="table2">
+        <div id="table-container2">
+            <h2>Recent Transactions</h2>
+            <table class="portfolio" frame=hsides rules=rows >
+                <thead>
+                <tr>
+                <th><h3>Type</h3></th>
+                <th><h3>Coin</h3></th> 
+                <th><h3>Amount</h3></th>
+                <th><h3>Date</h3></th>
+                </tr>
+                </thead>
+            <tbody>        
+            <tr>
+                <td>Bitcoin (BTC)</td>
+                <td>12390.32</td> 
+                <td>50</td>
+                <td>5000000</td>
+            </tr>
+            <tr>
+                <td>Ethereum (ETH)</td>
+                <td>500.67</td> 
+                <td>94</td>
+                <td>5020303</td>
+            </tr>
+            <tr>
+                <td>Bitcoin (BTC)</td>
+                <td>500.67</td> 
+                <td>94</td>
+                <td>5020303</td>
+            </tr>
+            <tr>
+                <td>Bitcoin (BTC)</td>
+                <td>500.67</td> 
+                <td>94</td>
+                <td>5020303</td>
+            </tr>
+            <tr>
+                <td>Bitcoin (BTC)</td>
+                <td>500.67</td> 
+                <td>94</td>
+                <td>5020303</td>
+            </tr>
+            </tbody>
+            </table>
+        </div>
+    </div>
+
 
 
     <div id="particle-canvas">
@@ -87,6 +178,77 @@
         </script>
     </div>
 
+
+
+    <div id="id00" class="modal">
+        <form class="modal-content animate" action="/action_page.php">
+        <div id="currency-typeahead" style="background-color:#f1f1f1">
+            <h2>Select Coin</h2>
+            <br>
+            <input type="coin" data-provide="typeahead" class="typeahead" placeholder="Search Currencies" autocomplete="off" required>
+        </div>
+
+        <div class="container" style="background-color:#f1f1f1">
+             <button type="submit">Select</button>
+            <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+        </div>
+        </form>
+    </div>
+
+
+
+    <div id="id01" class="modal">
+        <form class="modal-content animate" action="/action_page.php">
+        <div id="currency-typeahead" style="background-color:#f1f1f1">
+            <h2>Select Coin</h2>
+            <br>
+            <input type="coin" data-provide="typeahead" class="typeahead" placeholder="Search Currencies" autocomplete="off" required>
+        </div>
+
+        <div class="container" style="background-color:#f1f1f1">
+             <button type="submit">Select</button>
+            <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+        </div>
+        </form>
+    </div>
+
+
+
+    <div id="id02" class="modal">
+  
+        <form class="modal-content animate" action="/action_page.php">
+        <div class="imgcontainer">
+          <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+        </div>
+
+        <div class="container">
+          <label><b>Username</b></label>
+          <input type="text" placeholder="Enter Username" name="uname" required>
+
+          <label><b>Password</b></label>
+          <input type="password" placeholder="Enter Password" name="psw" required>
+            
+          <button type="submit">Login</button>
+          <input type="checkbox" checked="checked"> Remember me
+        </div>
+
+        <div class="container" style="background-color:#f1f1f1">
+          <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+        </div>
+        </form>
+    </div>
+
+        <script>
+        // Get the modal
+        var modal = document.getElementById('id01');
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+        }
+        </script>
 
 
 </body>

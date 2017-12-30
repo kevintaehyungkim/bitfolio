@@ -1,8 +1,11 @@
-# http://localhost:5000/
+# Author: Kevin Kim 
+# Date: December 2017
+# Base-URL: http://localhost:5000/
 
 import os
 import base64
-import blockchain
+import requests
+from blockchain import receive_data_single, image_url
 import urllib.parse
 from flask import Flask
 from flask import Markup
@@ -20,6 +23,9 @@ from sqlalchemy import Column, Integer, DateTime
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///bitfolio.db'
 db = SQLAlchemy(app)
+
+# Current URL
+CURRENT_URL = ""
 
 # AES Padding
 BS = 16
@@ -99,10 +105,13 @@ def home():
 # User Dashboard
 @app.route('/dashboard/<encrypt>')
 def dashboard(encrypt=None):
+    session["logged_in"] = True
     print ("DASHBOARD")
+    global CURRENT_URL
     if not session.get('logged_in'):
         return render_template('login.html')
     else:
+        CURRENT_URL = encrypt
         decoded_bytes = str(urllib.parse.unquote(encrypt)).encode()
         cipher = AESCipher('mysecretpassword')
         user_email = cipher.decrypt(decoded_bytes).decode("utf-8")
@@ -112,14 +121,44 @@ def dashboard(encrypt=None):
 
 
 # Transaction
-@app.route('/transaction', methods=['GET', 'POST'])
-def transaction():
+@app.route('/begin_transaction', methods=['GET', 'POST'])
+def begin_transaction():
+    session["transaction"] = True
+    print("Starting Transaction")
     if request.method == 'POST':
         coin_fullname = request.form['coin']
         coin_symbol = coin_fullname.split("(",1)[1][:-1]
-        coin_data = receive_coin_data([coin_symbol])
-        coin_price= coin_data[coin]["USD"]
-        print (coin_price)
+        coin_name = coin_fullname.split("(",1)[0]
+        coin_data = receive_data_single(coin_symbol)
+        coin_price= coin_data["USD"]
+        coin_url = image_url(coin_symbol)
+        return render_template('transaction.html', coin=coin_name, image_url=coin_url, coin_price=coin_price)
+
+
+# Transaction
+@app.route('/complete_transaction', methods=['GET', 'POST'])
+def complete_transaction():
+    session["transaction"] = True
+    print("Completing Transaction")
+    if request.method == 'POST':
+        print(request.form)
+        transaction_type = request.form.get('type')
+        trade_pair = request.form.get('pair')
+        trade_price = request.form['price']
+        trade_amount = request.form['amount']
+        try:
+
+            new_transaction = Transaction(transaction=transaction_type, coin=, amount=request.form['email'], total=request.form['password'])
+            db.session.add(new_user)
+            db.session.commit()
+            return redirect(url_for('login'))
+        except:
+            message = Markup("Invalid parameters: Please enter floats.")
+            flash(message)
+            return render_template('transaction.html')
+        return redirect(url_for('login'))
+
+
 
 # Signup
 @app.route('/signup', methods=['GET', 'POST'])
@@ -141,10 +180,16 @@ def signup():
 # Login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    #
+    global CURRENT_URL
     session["logged_in"] = False
+
     if request.method == 'GET':
-        return render_template('login.html')
+        if session["transaction"]:
+            session["logged_in"] = True
+            session["transaction"] = False
+            return redirect(url_for('dashboard', encrypt=CURRENT_URL))
+        else:
+            return render_template('login.html')
     else:
         post_email = request.form['email']
         post_password = request.form['password']
@@ -155,6 +200,7 @@ def login():
                     cipher = AESCipher('mysecretpassword')
                     encrypted_email = cipher.encrypt(post_email)
                     url = urllib.parse.quote_from_bytes(encrypted_email, safe='')
+                    CURRENT_URL = url
                     session["logged_in"] = True
                     return redirect(url_for('dashboard', encrypt=url))
                 else:
@@ -173,20 +219,23 @@ def login():
 # Logout
 @app.route("/logout")
 def logout():
+    global CURRENT_URL
     session["logged_in"] = False
+    CURRENT_URL = ""
     return redirect(url_for('home'))
-
 
 
 # with coin/quantities, calculate graph based on 
 def calculate_total(coin_dict):
     return
 
+
 def update_total():
     return
 
+
 if __name__ == "__main__":
-    print ("Bitfolio Started")
+    print ("Bitfolio Started!")
     db.create_all()
     app.secret_key = '123'
     app.debug = True

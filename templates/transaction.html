@@ -1,0 +1,115 @@
+<html lang="en">
+
+<head>
+
+    <title>Bitfolio</title>
+     <link href="../static/styles/transaction.css" type="text/css" rel="stylesheet">
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <link href="../static/styles/transaction.css" type="text/css" rel="stylesheet">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static', filename='styles/transaction.css') }}">
+
+</head>
+ 
+
+<body >
+
+    <header id="header">
+        <div class="content">
+        <nav id="nav">
+            <ul>
+         <!--        <li><a href="/dashboard" title="Next Section">DashBoard</a></li> -->
+                <li><a href="/login" title="Next Section">Dashboard</a></li>
+                <li><a href="/transaction" class="active" title="Next Section">Transactions</a></li>
+                <li><a href="/logout" title="Next Section">Logout</a></li>
+            </ul>
+        </nav>
+        </div>
+    </header>  
+
+    <div id="title">
+        <h1>Bitfolio</h1>
+        <h2>Personalized Cryptocurrency Portfolio</h2>
+    </div>
+
+
+
+     <div id="box1">
+        <h5>Transaction</h5>
+    </div>
+
+    <div id="box2">
+        <img src= "{{ image_url }}"\ alt="{{ coin }}" width="160">
+        <br>
+        <h4>{{ coin }}</h4>
+        <h6>$ {{ coin_price }}</h6>
+    </div>
+
+    <form action="/complete_transaction" method="POST">
+        <div id="transaction">
+            <div id="transaction-screen">
+
+                <div id="box3">
+                    <form class="form-signin">
+
+                        <div class="form-group">
+                            <label><b>Type</b></label>
+                            <select class="form-control" name="type" type="type" id="type">
+                                <option>BUY</option>
+                                <option>SELL</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label><b>Trading Pair</b></label>
+                            <select class="form-control" name="pair" type="pair" id="pair">
+                                <option>{{ coin }}/BTC</option>
+                                <option>{{ coin }}/USD</option>
+                            </select>
+                        </div>
+
+                        <label><b>Price</b></label>
+                        <input id="price" type="price" name="price" class="form-control" placeholder="Enter Price">
+                        <br></br>
+                        <label><b>Amount</b></label>
+                        <input id = "amount" type="amount" name="amount" class="form-control" placeholder="Enter Amount" required>
+                        <br></br>
+                        <button type="submit">Add Transaction</button>
+                    </form>
+                </div>
+            </div>
+            <div class="flashes">
+              {% for message in get_flashed_messages() %}
+                <h4>{{ message }}</h4>
+              {% endfor %}
+            </div>
+        </div>
+    </form>
+
+    <div id="box4">
+        <form action="/login" method="POST">
+            <button type="submit">Cancel</button>
+        </form>
+    </div>
+
+
+    <div id="particle-canvas">
+        <script type="text/javascript" src="../static/js/particle-network.min.js"></script>
+        <script type="text/javascript">
+        var canvasDiv = document.getElementById('particle-canvas');
+        var options = {
+            particleColor: '#888',
+            background: "../static/img/bg1.png",
+            interactive: false,
+            speed: 'normal',
+            density: 'high'
+        };
+        var particleCanvas = new ParticleNetwork(canvasDiv, options);
+        </script>
+    </div>
+
+</body>
+ 
+</html>
+
+

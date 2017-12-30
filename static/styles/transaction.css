@@ -44,12 +44,24 @@ h4 {
    text-align: center;
 }
 
+h5 {
+   font-weight: 300;
+   font-size: 48px;
+   margin: 0;
+   padding: 0;
+   line-height: 125%;
+   position: relative;
+   text-align: center;
+}
+
+
 br {
 	display: block;
 	margin: 8px 0;
 	line-height: 8px;
 	content: " ";
 }
+
 
 button {
     font-weight: lighter;
@@ -126,15 +138,59 @@ button:hover{
 	text-align: center;
 }
 
-#login {
-	width: 370px;
+#transaction {
+	width: 730px;
 	top: 260px;
-	left: 538px;
+	left: 360px;
 	position: absolute;
 	z-index: 22;
 }
 
-#login-screen {
+#box1 {
+	top:285px;
+	left: 392px;
+	position: absolute;
+	z-index: 35;
+	text-align:center;
+}
+
+#box1 h5{
+	font-size: 48px;
+}
+
+#box2 {
+	top:385px;
+	left: 440px;
+	position: absolute;
+	z-index: 35;
+	text-align:center;
+}
+
+#box2 h4{
+	font-size: 24px;
+	text-align: center;
+}
+
+#box2 h6{
+	font-size: 20px;
+	text-align: center;
+}
+
+#box3 {
+	left:200px;
+	margin-left: 300px;
+}
+
+#box4 {
+	top:609.4px;
+	left: 842px;
+	position: absolute;
+	z-index: 35;
+	text-align:center;
+}
+
+#transaction-screen {
+/*	left: 200px;*/
 	background-color: #FFF;
 	padding: 20px;
 	border-radius: 10px;

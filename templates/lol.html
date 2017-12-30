@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1"> -->
+<title>Example of Twitter Typeahead</title>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
+   <script type="text/javascript" src="../static/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="../static/js/bloodhound.js"></script>
+    <script type="text/javascript" src="../static/js/typeahead.jquery.js"></script>
+
+<script type="text/javascript">
+$.getJSON( "../coin_data.json", function( data ) {  
+    console.log( "JSON Data: " + data);
+    $.each( data, function( key, val ) {
+        console.log(key + "value:: " + val );
+    });
+});
+</script>
+
+
+<!-- <script type="text/javascript">
+$(document).ready(function () {
+var countries = new Bloodhound({  
+  datumTokenizer: function(countries) {
+      return Bloodhound.tokenizers.whitespace(countries.value);
+  },
+  queryTokenizer: Bloodhound.tokenizers.whitespace,
+  remote: {
+    url: "http://vocab.nic.in/rest.php/country/json",
+    filter: function(response) {      
+      return response.countries;
+    }
+  }
+});
+
+// initialize the bloodhound suggestion engine
+countries.initialize();
+
+// instantiate the typeahead UI
+$('.typeahead').typeahead(
+  { hint: true,
+    highlight: true,
+    minLength: 1
+  }, 
+  {
+  name: 'countries',
+  displayKey: function(countries) {
+    return countries.country.country_name;        
+  },
+  source: countries.ttAdapter()
+});
+</script> -->
+
+
+<style type="text/css">
+.container {
+    width: 800px;
+    margin: 50px auto;
+}
+.typeahead-wrapper {
+    display: block;
+    margin: 50px 0;
+}
+.tt-dropdown-menu {
+    background-color: #fff;
+    border: 1px solid #000;
+}
+.tt-suggestion.tt-cursor {
+    background-color: #ccc;
+}
+</style>
+
+</head>
+<body>
+<!--         <input type="text" class="typeahead tt-query" autocomplete="off" spellcheck="false"> -->
+        <input class="typeahead" data-provider="typeahead" placeholder="Testing" />
+</body>
+</html>  

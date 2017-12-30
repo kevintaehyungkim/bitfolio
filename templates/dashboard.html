@@ -17,6 +17,7 @@
     <link href="../static/styles/dashboard.css" type="text/css" rel="stylesheet">
     <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static', filename='styles/dashboard.css') }}">
 
+
 </head>
  
 
@@ -27,6 +28,7 @@
         <nav id="nav">
             <ul>
                 <li><a href="#" onClick="return false;" class="active">DashBoard</a></li>
+                 <li><a href="/transaction">Transactions</a></li>
                 <li><a href="/logout">Logout</a></li>
             </ul>
         </nav>
@@ -100,17 +102,19 @@
         </div>
     </div>
 
+    <form action="/begin_transaction" method="POST">
+        <div id="coin-typeahead">
+            <div id="typeahead">
+            <form class="form-signin">
+                <input id ="coin" type="coin" name="coin" class="typeahead tt-query" placeholder="Search Currencies" autocomplete="off" spellcheck="false" required>
+                <div id="add">
+                  <button type="submit"> + Add Transaction</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </form>
 
-    <div id="coin-typeahead">
-        <form class="form-signin" action="/transaction" method="POST">
-            <div class="typeahead">
-                <input id ="coin" type="coin" class="typeahead tt-query" placeholder="Search Currencies" autocomplete="off" spellcheck="false" required>
-            </div>
-            <div id="add">
-                <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;"> + Add Transaction</button>
-            </div>
-        </form>
-    </div>
 
 
     <div id="table2">
@@ -181,7 +185,7 @@
 
 
     <div id="id00" class="modal">
-        <form class="modal-content animate" action="/action_page.php">
+        <form class="modal-content animate" action="/transaction">
         <div id="currency-typeahead" style="background-color:#f1f1f1">
             <h2>Select Coin</h2>
             <br>
@@ -237,6 +241,7 @@
         </div>
         </form>
     </div>
+
 
         <script>
         // Get the modal

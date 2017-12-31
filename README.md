@@ -2,9 +2,10 @@
 
 Simple-to-use personal cryptocurrency portfolio built using Flask. Maintains a SQL database for users and transactions, provides typeahead search functionalities for all current cryptocurrencies, organizes all recorded transactions on the dashboard, and provides tools to better organize your portfolio.
 
-![](bitfolio_home.png =180x)
-![](bitfolio_dashboard.png =180x)
-![](bitfolio_transaction.png =180x)
+![](bitfolio_home.png | width=180)
+![](bitfolio_dashboard.png | width=180)
+![](bitfolio_transaction.png | width=180)
+<img src="bitfolio_home.png" width="180">
 
 ### Prerequisites
 

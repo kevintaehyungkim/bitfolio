@@ -44,7 +44,7 @@
                 <h2>Welcome</h2>
                     <h1>{{ name }}</h1>
                 <br></br>
-                <h2>Total Balance: $ {{total_val}} </h2>
+                <h2>Total Balance: $ {{total_bal}} </h2>
             </div>
         </div>
     </div> 
@@ -73,30 +73,15 @@
                 </tr>
                 </thead>
             <tbody>        
-            <tr>
-                <td>Bitcoin (BTC)</td>
-                <td>$12390.32</td> 
-                <td>50</td>
-                <td>5000000</td>
-            </tr>
-            <tr>
-                <td>Ethereum (ETH)</td>
-                <td>$500.67</td> 
-                <td>94</td>
-                <td>5020303</td>
-            </tr>
-            <tr>
-                <td>Ripple (XRP)</td>
-                <td>$1.34</td> 
-                <td>94</td>
-                <td>5020303</td>
-            </tr>
-            <tr>
-                <td>Litecoin (LTC)</td>
-                <td>$300.27</td> 
-                <td>94</td>
-                <td>5020303</td>
-            </tr>
+            {% for coin in coin_portfolio %} 
+                <tr>
+           <!--         <td class="c1"><IMG src="favicon.ico"></td> -->
+                    <td class="c1">{{ coin.name }}</td>
+                    <td class="c2">{{ coin.curr_price }}</td>
+                    <td class="c3">{{ coin.holdings }}</td>
+                    <td class="c4">{{ coin.total }}</td>
+                </tr>      
+            {% endfor %}
             </tbody>
             </table>
         </div>
@@ -129,37 +114,17 @@
                 <th><h3>Date</h3></th>
                 </tr>
                 </thead>
-            <tbody>        
-            <tr>
-                <td>Bitcoin (BTC)</td>
-                <td>12390.32</td> 
-                <td>50</td>
-                <td>5000000</td>
-            </tr>
-            <tr>
-                <td>Ethereum (ETH)</td>
-                <td>500.67</td> 
-                <td>94</td>
-                <td>5020303</td>
-            </tr>
-            <tr>
-                <td>Bitcoin (BTC)</td>
-                <td>500.67</td> 
-                <td>94</td>
-                <td>5020303</td>
-            </tr>
-            <tr>
-                <td>Bitcoin (BTC)</td>
-                <td>500.67</td> 
-                <td>94</td>
-                <td>5020303</td>
-            </tr>
-            <tr>
-                <td>Bitcoin (BTC)</td>
-                <td>500.67</td> 
-                <td>94</td>
-                <td>5020303</td>
-            </tr>
+            <tbody> 
+
+            {% for transaction in transactions %} 
+                <tr>
+           <!--         <td class="c1"><IMG src="favicon.ico"></td> -->
+                    <td class="c1">{{ transaction.type }}</td>
+                    <td class="c2">{{ transaction.coin }}</td>
+                    <td class="c3">${{transaction.amount}}</td>
+                    <td class="c4">{{transaction.date}}</td>
+                </tr>      
+            {% endfor %}
             </tbody>
             </table>
         </div>

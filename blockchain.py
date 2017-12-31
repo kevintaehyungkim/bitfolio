@@ -82,8 +82,9 @@ def generate_data():
 
 
 if __name__ == "__main__":
-	generate_list()
-	generate_data()
+	# generate_list()
+	# generate_data()
+	print(receive_data_multiple(['ETC', 'BTC']))
 	# receive_coin_data(["BTC", "ETH", "EOS", "OMG", "TRX"])
 	print(image_url("BTC"))
 	# btc_public_key("1AJbsFZ64EpEfS5UAjAfcUG8pH8Jn3rn1F")

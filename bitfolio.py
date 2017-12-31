@@ -4,9 +4,10 @@
 
 import os
 import base64
+import datetime
 import requests
-from blockchain import receive_data_single, image_url
 import urllib.parse
+from blockchain import receive_data_single, receive_data_multiple, image_url
 from flask import Flask
 from flask import Markup
 from flask import Flask, flash, redirect, url_for, request, render_template, json, session, abort
@@ -14,18 +15,25 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug import generate_password_hash, check_password_hash
 from Crypto import Random
 from Crypto.Cipher import AES
-
 from sqlalchemy.sql import func
-# import datetime
-from sqlalchemy import Column, Integer, DateTime
+from sqlalchemy import Column, Integer, DateTime, desc
+# from sqlalchemy import desc
 # created_date = Column(DateTime, default=datetime.datetime.utcnow)
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///bitfolio.db'
 db = SQLAlchemy(app)
 
-# Current URL
+# Current
 CURRENT_URL = ""
+CURRENT_EMAIL = ""
+
+#CryptoCompare Base URL
+CRYPTO_BASE_URL = "https://www.cryptocompare.com"
+
+#Read JSON data into the coin_database variable
+with open('coin_data.json', 'r') as f:
+    coin_database = json.load(f)
 
 # AES Padding
 BS = 16
@@ -77,22 +85,24 @@ class User(db.Model):
 class Transaction(db.Model):
     __tablename__ = 'transactions'
     id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(45))
     transaction = db.Column(db.String(4))
     coin = db.Column(db.String(20))
     amount = db.Column(db.Float(precision=4))
     total = db.Column(db.Float(precision=4))
-    time_created = db.Column(DateTime(timezone=True), server_default=func.now())
+    time_created = db.Column(db.DateTime, default=datetime.datetime.now())
 
-    def __init__(self, transaction, coin, amount):
-        self.transaction = transaction
-        self.coin = coin
-        self.amount = amount
-        self.total = coin_price(coin, amount)
-        self.time_created = time_created
+    def __init__(self, email, transaction, coin, amount):
+        self.email = email
+        self.transaction = str(transaction)
+        self.coin = str(coin)
+        self.amount = float(amount)
+        self.total = self.coin_price(coin, amount)
+        self.time_created = datetime.datetime.now()
 
     def coin_price(self, coin, amount):
-        coin_price = receive_coin_data([coin])
-        return coin_price * amount  
+        coin_price = (receive_data_single(coin))["USD"]
+        return float(float(coin_price) * amount)
 
 
 # Home Page
@@ -105,19 +115,55 @@ def home():
 # User Dashboard
 @app.route('/dashboard/<encrypt>')
 def dashboard(encrypt=None):
+    print ("Loading Dashboard")
     session["logged_in"] = True
-    print ("DASHBOARD")
     global CURRENT_URL
     if not session.get('logged_in'):
         return render_template('login.html')
     else:
+        acc_total = 0.0
+        transactions = []
+        coin_holdings = {}
+        coin_portfolio = []
         CURRENT_URL = encrypt
         decoded_bytes = str(urllib.parse.unquote(encrypt)).encode()
         cipher = AESCipher('mysecretpassword')
         user_email = cipher.decrypt(decoded_bytes).decode("utf-8")
         user_data = User.query.filter_by(email=user_email).first()
         full_name = user_data.firstname + " " + user_data.lastname
-        return render_template('dashboard.html', name=full_name)
+
+        data = Transaction.query.filter_by(email=user_email).all()
+        for d in data:
+            acc_total += d.total
+            if d.coin in coin_holdings:
+                coin_holdings[d.coin] += d.amount
+            else:
+                coin_holdings[d.coin] = d.amount
+
+        coin_list = list(coin_holdings.keys())
+        coin_prices = receive_data_multiple(coin_list)
+
+        for c in coin_holdings.keys():
+            coin = dict(name=c, curr_price="$"+str(("%.4f" % coin_prices[c]['USD'])), holdings=("%.4f" % coin_holdings[c]), total="$"+str(("%.4f" % (coin_prices[c]['USD']*coin_holdings[c]))))
+            coin_portfolio.append(coin)
+
+        coin_portfolio.append(dict(name="&nbsp;", curr_price="&nbsp;", holdings="&nbsp;", total="&nbsp;"))
+        coin_portfolio.append(dict(name="&nbsp;", curr_price="&nbsp;", holdings="&nbsp;", total="&nbsp;"))
+
+        entities = Transaction.query.filter(Transaction.email == user_email).order_by(desc(Transaction.time_created)).limit(5).all()
+        if entities:
+            for entity in entities:
+                if entity.transaction == 'BUY':
+                    transaction = dict(type=entity.transaction, coin=entity.coin, amount=("%.4f" % entity.total), date=entity.time_created.strftime('%m/%d/%Y %H:%M'))
+                elif entity.transaction == 'SELL':
+                    transaction = dict(type=entity.transaction, coin=entity.coin, amount=-1.0*float("%.4f" % entity.total), date=entity.time_created.strftime('%m/%d/%Y %H:%M'))
+                transactions.append(transaction)
+
+        if len(transactions) < 5:
+            for i in range(0, 5-len(transactions)):
+                transaction = dict(type=" ", coin=" ", amount=" ", date=" ")
+
+        return render_template('dashboard.html', name=full_name, total_bal=acc_total, transactions=transactions, coin_portfolio=coin_portfolio)
 
 
 # Transaction
@@ -127,14 +173,10 @@ def begin_transaction():
     print("Starting Transaction")
     if request.method == 'POST':
         coin_fullname = request.form['coin']
-        print(coin_fullname)
         coin_symbol = coin_fullname.split("(",1)[1][:-1]
-        print(coin_symbol)
-        coin_name = coin_fullname.split("(",1)[0]
         coin_data = receive_data_single(coin_symbol)
         coin_price = coin_data["USD"]
-        # coin_url = image_url(coin_symbol)
-        return render_template('transaction.html', coin=coin_name, image_url=image_url(coin_symbol), coin_price=coin_price, coin_symbol=coin_symbol)
+        return render_template('transaction.html', coin=coin_database[coin_symbol]["CoinName"], image_url=CRYPTO_BASE_URL+coin_database[coin_symbol]["ImageUrl"], coin_price=coin_price, coin_symbol=coin_symbol)
 
 
 # Transaction
@@ -143,26 +185,44 @@ def complete_transaction():
     session["transaction"] = True
     print("Completing Transaction")
     if request.method == 'POST':
-        print(request.form)
         transaction_type = request.form.get('type')
         trade_pair = request.form.get('pair')
         trade_price = request.form['price']
         trade_amount = request.form['amount']
         coin_symbol = trade_pair.split("/", 1)[0]
+        coin_data = receive_data_single(coin_symbol)
+        coin_price= coin_data["USD"]
+
         try:
-            new_transaction = Transaction(transaction=transaction_type, coin=coin_symbol, amount=float(trade_amount))
+            if transaction_type == 'BUY':
+                new_transaction = Transaction(email=CURRENT_EMAIL, transaction=transaction_type, coin=coin_symbol, amount=float(trade_amount))
+            elif transaction_type == 'SELL':
+                data = Transaction.query.filter_by(coin=coin_symbol).all()
+                coin_total = 0.0
+                for d in data:
+                    coin_total += d.amount
+                if coin_total > 0 and float(trade_amount) <= coin_total:
+                    new_transaction = Transaction(email=CURRENT_EMAIL, transaction=transaction_type, coin=coin_symbol, amount=-1.0*float(trade_amount))
+                else:
+                    message = Markup("You don't have enough coins.")
+                    flash(message)
+                    return render_template('transaction.html', coin=coin_database[coin_symbol]["CoinName"], image_url=CRYPTO_BASE_URL+coin_database[coin_symbol]["ImageUrl"], coin_price=coin_price, coin_symbol=coin_symbol)
+        except Exception as e:
+            print(e)
+            message = Markup("Invalid parameters: Please enter valid price and amount.")
+            flash(message)
+            return render_template('transaction.html', coin=coin_database[coin_symbol]["CoinName"], image_url=CRYPTO_BASE_URL+coin_database[coin_symbol]["ImageUrl"], coin_price=coin_price, coin_symbol=coin_symbol)
+
+        try:
             db.session.add(new_transaction)
             db.session.commit()
-            return redirect(url_for('login'))
-        except:
-            coin_data = receive_data_single(coin_symbol)
-            coin_price= coin_data["USD"]
-            # coin_url = image_url(coin_symbol)
-            message = Markup("Invalid parameters: Please enter valid numbers.")
+        except Exception as e:
+            print(e)
+            message = Markup("Failed to record transaction. Please try again.")
             flash(message)
-            return render_template('transaction.html', coin=coin_name, image_url=image_url(coin_symbol), coin_price=coin_price)
-        return redirect(url_for('login'))
+            return render_template('transaction.html', coin=coin_database[coin_symbol]["CoinName"], image_url=CRYPTO_BASE_URL+coin_database[coin_symbol]["ImageUrl"], coin_price=coin_price, coin_symbol=coin_symbol)
 
+        return redirect(url_for('login'))
 
 
 # Signup
@@ -186,24 +246,31 @@ def signup():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     global CURRENT_URL
-    session["logged_in"] = False
+    global CURRENT_EMAIL
 
     if request.method == 'GET':
-        if session["transaction"]:
-            session["logged_in"] = True
-            session["transaction"] = False
-            return redirect(url_for('dashboard', encrypt=CURRENT_URL))
+        # needs fixing, particularly when back from dashboard
+        if "transaction" in session and "logged_in" in session:
+            if session["transaction"] and session["logged_in"]:
+                session["logged_in"] = True
+                session["transaction"] = False
+                return redirect(url_for('dashboard', encrypt=CURRENT_URL))
+            # if not session["transaction"]:
+            #     session["logged_in"] = False
+            #     session["transaction"] = False
+            #     return render_template('login.html')
         else:
             return render_template('login.html')
     else:
         post_email = request.form['email']
         post_password = request.form['password']
+        CURRENT_EMAIL = post_email
         try:
             data = User.query.filter_by(email=post_email).first()
             if data is not None:
                 if check_password_hash(data.password, post_password):
                     cipher = AESCipher('mysecretpassword')
-                    encrypted_email = cipher.encrypt(post_email)
+                    encrypted_email = cipher.encrypt(CURRENT_EMAIL)
                     url = urllib.parse.quote_from_bytes(encrypted_email, safe='')
                     CURRENT_URL = url
                     session["logged_in"] = True
@@ -220,13 +287,16 @@ def login():
             message = Markup("Login Failed. Please try again.")
             flash(message)
             return render_template('login.html')
+    return render_template('login.html')
 
 # Logout
 @app.route("/logout")
 def logout():
     global CURRENT_URL
+    global CURRENT_EMAIL
     session["logged_in"] = False
     CURRENT_URL = ""
+    CURRENT_EMAIL = ""
     return redirect(url_for('home'))
 
 

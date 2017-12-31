@@ -6,8 +6,9 @@ import os
 import base64
 import datetime
 import requests
+import operator
 import urllib.parse
-from blockchain import receive_data_single, receive_data_multiple, image_url
+from blockchain import receive_data_single, receive_data_multiple, generate_data
 from flask import Flask
 from flask import Markup
 from flask import Flask, flash, redirect, url_for, request, render_template, json, session, abort
@@ -109,6 +110,7 @@ class Transaction(db.Model):
 @app.route('/', methods=['GET', 'POST'])
 def home():
     session["logged_in"] = False
+    session["transaction"] = False
     return render_template('home.html')
 
 
@@ -140,30 +142,31 @@ def dashboard(encrypt=None):
             else:
                 coin_holdings[d.coin] = d.amount
 
+        # sorted(coin_holdings.items(), key=lambda x: x[1], reverse=True)
+
         coin_list = list(coin_holdings.keys())
         coin_prices = receive_data_multiple(coin_list)
 
         for c in coin_holdings.keys():
-            coin = dict(name=c, curr_price="$"+str(("%.4f" % coin_prices[c]['USD'])), holdings=("%.4f" % coin_holdings[c]), total="$"+str(("%.4f" % (coin_prices[c]['USD']*coin_holdings[c]))))
+            coin = dict(name=c, curr_price=("%.4f" % coin_prices[c]['USD']), holdings=("%.4f" % coin_holdings[c]), image_url=CRYPTO_BASE_URL+coin_database[c]["ImageUrl"],total=("%.4f" % float(coin_prices[c]['USD']*coin_holdings[c])))
             coin_portfolio.append(coin)
 
-        coin_portfolio.append(dict(name="&nbsp;", curr_price="&nbsp;", holdings="&nbsp;", total="&nbsp;"))
-        coin_portfolio.append(dict(name="&nbsp;", curr_price="&nbsp;", holdings="&nbsp;", total="&nbsp;"))
+        sorted(coin_portfolio, key=lambda k: k['total'])
 
         entities = Transaction.query.filter(Transaction.email == user_email).order_by(desc(Transaction.time_created)).limit(5).all()
         if entities:
             for entity in entities:
                 if entity.transaction == 'BUY':
-                    transaction = dict(type=entity.transaction, coin=entity.coin, amount=("%.4f" % entity.total), date=entity.time_created.strftime('%m/%d/%Y %H:%M'))
+                    transaction = dict(type=entity.transaction, coin=entity.coin, image_url=CRYPTO_BASE_URL+coin_database[entity.coin]["ImageUrl"], amount=("%.4f" % entity.total), date=entity.time_created.strftime('%m/%d/%Y %H:%M'))
                 elif entity.transaction == 'SELL':
-                    transaction = dict(type=entity.transaction, coin=entity.coin, amount=-1.0*float("%.4f" % entity.total), date=entity.time_created.strftime('%m/%d/%Y %H:%M'))
+                    transaction = dict(type=entity.transaction, coin=entity.coin, image_url=CRYPTO_BASE_URL+coin_database[entity.coin]["ImageUrl"], amount=-1.0*float("%.4f" % entity.total), date=entity.time_created.strftime('%m/%d/%Y %H:%M'))
                 transactions.append(transaction)
 
         if len(transactions) < 5:
             for i in range(0, 5-len(transactions)):
                 transaction = dict(type=" ", coin=" ", amount=" ", date=" ")
 
-        return render_template('dashboard.html', name=full_name, total_bal=acc_total, transactions=transactions, coin_portfolio=coin_portfolio)
+    return render_template('dashboard.html', name=full_name, total_bal=float("%.2f" % acc_total), transactions=transactions, coin_portfolio=coin_portfolio)
 
 
 # Transaction
@@ -225,6 +228,21 @@ def complete_transaction():
         return redirect(url_for('login'))
 
 
+# Clear all Transactions
+@app.route("/clear", methods=['GET', 'POST'])
+def clear():
+    print ("Clearing all transactions")
+    if request.method == 'POST':
+        session["logged_in"] = True
+        session["transaction"] = False
+        try:
+            num_rows_deleted = db.session.query(Transaction).delete()
+            db.session.commit()
+        except:
+            db.session.rollback()
+    return redirect(url_for('login'))
+
+
 # Signup
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -248,20 +266,18 @@ def login():
     global CURRENT_URL
     global CURRENT_EMAIL
 
+    if session["transaction"] or session["logged_in"]:
+            session["logged_in"] = True
+            session["transaction"] = False
+            return redirect(url_for('dashboard', encrypt=CURRENT_URL))
+
     if request.method == 'GET':
-        # needs fixing, particularly when back from dashboard
-        if "transaction" in session and "logged_in" in session:
-            if session["transaction"] and session["logged_in"]:
-                session["logged_in"] = True
-                session["transaction"] = False
-                return redirect(url_for('dashboard', encrypt=CURRENT_URL))
-            # if not session["transaction"]:
-            #     session["logged_in"] = False
-            #     session["transaction"] = False
-            #     return render_template('login.html')
-        else:
-            return render_template('login.html')
+        return render_template('login.html')
     else:
+
+        if session["logged_in"]:
+            return redirect(url_for('dashboard', encrypt=CURRENT_URL))
+
         post_email = request.form['email']
         post_password = request.form['password']
         CURRENT_EMAIL = post_email
@@ -311,7 +327,9 @@ def update_total():
 
 if __name__ == "__main__":
     print ("Bitfolio Started!")
+    generate_data()
     db.create_all()
     app.secret_key = '123'
     app.debug = True
     app.run(threaded=True)
+

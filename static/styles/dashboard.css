@@ -43,6 +43,7 @@ br {
 
 table {
 	border-radius: 5px;
+	empty-cells: show;
 }
 
 tr {
@@ -114,6 +115,13 @@ button {
 button:hover {
 	opacity: 0.9;
 	cursor: pointer;
+}
+
+#clear {
+	top: 268.3px;
+	left: 504px;
+	position: absolute;
+	z-index: 45;
 }
 
 
@@ -190,15 +198,14 @@ PORTFOLIO
 }
 
 .portfolio td, .portfolio th {
-	padding-bottom: 1.8%;
-	padding-top: 1.8%;
+	padding-bottom: 0.7%;
+	padding-top: 2.5%;
     padding-left:1.8%;  
 }
 
 .portfolio th {
 	  background-color: #34363B;
 }
-
 
 
 /*
@@ -220,6 +227,14 @@ RECENT TRANSACTIONS
 	border-radius: 5px;
 	box-sizing: border-box;
 	border: 1.47px solid #DBE1E8;
+}
+
+.buy {
+	color: green;
+}
+
+.sell {
+	color: red;
 }
 
 
@@ -404,9 +419,6 @@ input[type=coin], input[type=key] {
 	position: absolute;
 	z-index: 35;
 }
-
-
-
 
 
 

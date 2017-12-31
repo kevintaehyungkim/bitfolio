@@ -49,6 +49,11 @@
         </div>
     </div> 
 
+    <div id="clear">
+        <form action="/clear" method="POST">
+            <button type="submit">Clear All</button>
+        </form>
+    </div>
 
      <div id="key">
         <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;"> &#128273; Import Wallet</button>
@@ -56,7 +61,9 @@
 
 
     <div id="reload">
-        <button type="submit"> &#x27f3; Reload</button>
+        <form action="/login" method="POST">
+            <button type="submit">&#x27f3; Reload</button>
+        </form>
     </div>
 
 
@@ -74,12 +81,11 @@
                 </thead>
             <tbody>        
             {% for coin in coin_portfolio %} 
-                <tr>
-           <!--         <td class="c1"><IMG src="favicon.ico"></td> -->
-                    <td class="c1">{{ coin.name }}</td>
-                    <td class="c2">{{ coin.curr_price }}</td>
-                    <td class="c3">{{ coin.holdings }}</td>
-                    <td class="c4">{{ coin.total }}</td>
+                <tr height = 20px>
+                    <td class="c1" style="line-height:27px;"><img src="{{ coin.image_url }}" width=20px> {{ coin.name }}</td>
+                    <td class="c2" style="line-height:27px;">${{ coin.curr_price }}</td>
+                    <td class="c3" style="line-height:27px;">{{ coin.holdings }}</td>
+                    <td class="c4" style="line-height:27px;">${{ coin.total }}</td>
                 </tr>      
             {% endfor %}
             </tbody>
@@ -118,11 +124,17 @@
 
             {% for transaction in transactions %} 
                 <tr>
-           <!--         <td class="c1"><IMG src="favicon.ico"></td> -->
-                    <td class="c1">{{ transaction.type }}</td>
-                    <td class="c2">{{ transaction.coin }}</td>
-                    <td class="c3">${{transaction.amount}}</td>
-                    <td class="c4">{{transaction.date}}</td>
+                {% if transaction.type == 'BUY' %}
+                    <td class="buy" style="line-height:27px;">{{ transaction.type }}</td>
+                    <td class="c2" style="line-height:27px;"><img src="{{ transaction.image_url }}" width=20px> {{ transaction.coin }}</td>
+                    <td class="buy" style="line-height:27px;">${{transaction.amount}}</td>
+                    <td class="c2" style="line-height:27px;">{{transaction.date}}</td>
+                {% elif transaction.type == 'SELL' %}
+                    <td class="sell" style="line-height:27px;">{{ transaction.type }}</td>
+                    <td class="c2" style="line-height:27px;"><img src="{{ transaction.image_url }}" width=20px> {{ transaction.coin }}</td>
+                    <td class="sell" style="line-height:27px;">${{transaction.amount}}</td>
+                    <td class="c2" style="line-height:27px;">{{transaction.date}}</td>
+                {% endif %}
                 </tr>      
             {% endfor %}
             </tbody>

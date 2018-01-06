@@ -4,7 +4,7 @@ Simple-to-use personal cryptocurrency portfolio built using Flask. Maintains a S
 
 <img src="img/bitfolio_home.png" width="500">
 <img src="img/bitfolio_url.png" width="500">
-<img src="img/bitfolio_dashboard.png" width="500">
+<img src="img/bitfolio_user.png" width="500">
 <img src="img/bitfolio_transaction.png" width="500">
 
 ### Prerequisites

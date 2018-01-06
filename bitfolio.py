@@ -145,26 +145,27 @@ def dashboard(encrypt=None):
         # sorted(coin_holdings.items(), key=lambda x: x[1], reverse=True)
 
         coin_list = list(coin_holdings.keys())
-        coin_prices = receive_data_multiple(coin_list)
+        if len(coin_list) > 0:
+            coin_prices = receive_data_multiple(coin_list)['RAW']
 
-        for c in coin_holdings.keys():
-            coin = dict(name=c, curr_price=("%.4f" % coin_prices[c]['USD']), holdings=("%.4f" % coin_holdings[c]), image_url=CRYPTO_BASE_URL+coin_database[c]["ImageUrl"],total=("%.4f" % float(coin_prices[c]['USD']*coin_holdings[c])))
-            coin_portfolio.append(coin)
+            for c in coin_holdings.keys():
+                coin = dict(name=c, curr_price=("%.2f" % coin_prices[c]['USD']['PRICE']), holdings=("%.2f" % coin_holdings[c]), image_url=CRYPTO_BASE_URL+coin_database[c]["ImageUrl"],total=("%.2f" % float(coin_prices[c]['USD']['PRICE']*coin_holdings[c])), change=("%.2f" % float(coin_prices[c]['USD']['CHANGEPCT24HOUR'])))
+                coin_portfolio.append(coin)
 
-        sorted(coin_portfolio, key=lambda k: k['total'])
+            sorted(coin_portfolio, key=lambda k: k['total'])
 
-        entities = Transaction.query.filter(Transaction.email == user_email).order_by(desc(Transaction.time_created)).limit(5).all()
-        if entities:
-            for entity in entities:
-                if entity.transaction == 'BUY':
-                    transaction = dict(type=entity.transaction, coin=entity.coin, image_url=CRYPTO_BASE_URL+coin_database[entity.coin]["ImageUrl"], amount=("%.4f" % entity.total), date=entity.time_created.strftime('%m/%d/%Y %H:%M'))
-                elif entity.transaction == 'SELL':
-                    transaction = dict(type=entity.transaction, coin=entity.coin, image_url=CRYPTO_BASE_URL+coin_database[entity.coin]["ImageUrl"], amount=-1.0*float("%.4f" % entity.total), date=entity.time_created.strftime('%m/%d/%Y %H:%M'))
-                transactions.append(transaction)
+            entities = Transaction.query.filter(Transaction.email == user_email).order_by(desc(Transaction.time_created)).limit(5).all()
+            if entities:
+                for entity in entities:
+                    if entity.transaction == 'BUY':
+                        transaction = dict(type=entity.transaction, coin=entity.coin, image_url=CRYPTO_BASE_URL+coin_database[entity.coin]["ImageUrl"], quantity=entity.amount, value=("%.2f" % entity.total), date=entity.time_created.strftime('%m/%d/%Y %H:%M'))
+                    elif entity.transaction == 'SELL':
+                        transaction = dict(type=entity.transaction, coin=entity.coin, image_url=CRYPTO_BASE_URL+coin_database[entity.coin]["ImageUrl"], quantity=entity.amount, value=-1.0*float("%.2f" % entity.total), date=entity.time_created.strftime('%m/%d/%Y %H:%M'))
+                    transactions.append(transaction)
 
-        if len(transactions) < 5:
-            for i in range(0, 5-len(transactions)):
-                transaction = dict(type=" ", coin=" ", amount=" ", date=" ")
+            if len(transactions) < 5:
+                for i in range(0, 5-len(transactions)):
+                    transaction = dict(type=" ", coin=" ", quantity=" ", value=" ", date=" ")
 
     return render_template('dashboard.html', name=full_name, total_bal=float("%.2f" % acc_total), transactions=transactions, coin_portfolio=coin_portfolio)
 

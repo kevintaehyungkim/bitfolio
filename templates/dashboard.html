@@ -77,15 +77,25 @@
                 <th><h3>Current Price</h3></th> 
                 <th><h3>Holdings</h3></th>
                 <th><h3>Total</h3></th>
+                <th><h3>Change (24h)</h3></th>
                 </tr>
                 </thead>
             <tbody>        
             {% for coin in coin_portfolio %} 
                 <tr height = 20px>
+                {% if coin.change[0] == '-' %}
                     <td class="c1" style="line-height:27px;"><img src="{{ coin.image_url }}" width=20px> {{ coin.name }}</td>
                     <td class="c2" style="line-height:27px;">${{ coin.curr_price }}</td>
                     <td class="c3" style="line-height:27px;">{{ coin.holdings }}</td>
                     <td class="c4" style="line-height:27px;">${{ coin.total }}</td>
+                    <td class="red" style="line-height:27px;">{{ coin.change }}%</td>
+                {% else %}
+                    <td class="c1" style="line-height:27px;"><img src="{{ coin.image_url }}" width=20px> {{ coin.name }}</td>
+                    <td class="c2" style="line-height:27px;">${{ coin.curr_price }}</td>
+                    <td class="c3" style="line-height:27px;">{{ coin.holdings }}</td>
+                    <td class="c4" style="line-height:27px;">${{ coin.total }}</td>
+                    <td class="green" style="line-height:27px;">{{ coin.change }}%</td>
+                {% endif %}
                 </tr>      
             {% endfor %}
             </tbody>
@@ -116,7 +126,8 @@
                 <tr>
                 <th><h3>Type</h3></th>
                 <th><h3>Coin</h3></th> 
-                <th><h3>Amount</h3></th>
+                <th><h3>Quantity</h3></th> 
+                <th><h3>Value</h3></th>
                 <th><h3>Date</h3></th>
                 </tr>
                 </thead>
@@ -125,14 +136,16 @@
             {% for transaction in transactions %} 
                 <tr>
                 {% if transaction.type == 'BUY' %}
-                    <td class="buy" style="line-height:27px;">{{ transaction.type }}</td>
+                    <td class="green" style="line-height:27px;">{{ transaction.type }}</td>
                     <td class="c2" style="line-height:27px;"><img src="{{ transaction.image_url }}" width=20px> {{ transaction.coin }}</td>
-                    <td class="buy" style="line-height:27px;">${{transaction.amount}}</td>
+                    <td class="c2" style="line-height:27px;">{{transaction.quantity}}</td>
+                    <td class="green" style="line-height:27px;">${{transaction.value}}</td>
                     <td class="c2" style="line-height:27px;">{{transaction.date}}</td>
                 {% elif transaction.type == 'SELL' %}
-                    <td class="sell" style="line-height:27px;">{{ transaction.type }}</td>
+                    <td class="red" style="line-height:27px;">{{ transaction.type }}</td>
                     <td class="c2" style="line-height:27px;"><img src="{{ transaction.image_url }}" width=20px> {{ transaction.coin }}</td>
-                    <td class="sell" style="line-height:27px;">${{transaction.amount}}</td>
+                    <td class="c2" style="line-height:27px;">{{transaction.quantity}}</td>
+                    <td class="red" style="line-height:27px;">${{transaction.value}}</td>
                     <td class="c2" style="line-height:27px;">{{transaction.date}}</td>
                 {% endif %}
                 </tr>      

@@ -229,11 +229,11 @@ RECENT TRANSACTIONS
 	border: 1.47px solid #DBE1E8;
 }
 
-.buy {
+.green {
 	color: green;
 }
 
-.sell {
+.red {
 	color: red;
 }
 

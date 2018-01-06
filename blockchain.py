@@ -16,7 +16,8 @@ def receive_data_multiple(coin_arr):
 	for coin in coin_arr:
 		coins += coin + ","
 	coins = coins[:-1]
-	url = "https://min-api.cryptocompare.com/data/pricemulti?fsyms={}&tsyms=USD".format(coins)
+	# url = "https://min-api.cryptocompare.com/data/pricemulti?fsyms={}&tsyms=USD".format(coins)
+	url = "https://min-api.cryptocompare.com/data/pricemultifull?fsyms={}&tsyms=USD&extraParams=bitfolio".format(coins)
 	response = requests.get(url)
 	data = response.json()
 	return data
@@ -84,7 +85,7 @@ def generate_data():
 if __name__ == "__main__":
 	# generate_list()
 	# generate_data()
-	print(receive_data_multiple(['ETC', 'BTC']))
+	print(receive_data_multiple(['BTC']))
 	# receive_coin_data(["BTC", "ETH", "EOS", "OMG", "TRX"])
-	print(image_url("BTC"))
+	# print(image_url("BTC"))
 	# btc_public_key("1AJbsFZ64EpEfS5UAjAfcUG8pH8Jn3rn1F")
